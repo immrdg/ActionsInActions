@@ -39,4 +39,10 @@ jobs:
         run: |
           echo "The repository ${{ github.repository }} contains the following files"
           tree
-      
+      - name: Workflow Inputs
+        run: |
+           echo "Homedrive: ${{ inputs.homedrive }}"
+           echo "Log level: ${{ inputs.logLevel }}"
+           echo "Tag source: ${{ inputs.tag }}"
+           echo "Environment ${{ inputs.environment }}"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
