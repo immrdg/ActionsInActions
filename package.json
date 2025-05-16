@@ -1,0 +1,19 @@
+{
+  "name": "actions-in-actions",
+  "version": "1.0.0",
+  "description": "A repository for learning GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/immrdg/ActionsInActions.git"
+  },
+  "keywords": [
+    "github",
+    "actions"
+  ],
+  "author": "Gireesh",
+  "license": "MIT"
+}

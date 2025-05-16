@@ -145,14 +145,12 @@ jobs:
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
-          # Uncomment when you have a package.json
-          # npm ci
+          npm ci
 
       - name: Run tests
         run: |
           echo "Running tests on ${{ matrix.os_version }} with Node.js ${{ matrix.node_version }}"
-          # Uncomment when you have tests
-          # npm test
+          npm test
 
       - name: Report status
         if: always()  # Run even if previous steps fail
