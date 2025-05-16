@@ -46,3 +46,14 @@ jobs:
            echo "Tag source: ${{ inputs.tag }}"
            echo "Environment ${{ inputs.env }}"
         if: ${{ github.event_name == 'workflow_dispatch' }}
+
+  Job2:
+    needs: [MyFirstJob]
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo Job : ${{ github.job }}"
+  Job3:
+    needs: [MyFirstJob, Job2]
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo Job : ${{ github.job }}"
