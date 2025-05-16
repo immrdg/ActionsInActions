@@ -52,13 +52,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: "echo Job : ${{ github.job }}"
-  job3:
+  Job3:
     needs: [MyFirstJob]
     runs-on: ubuntu-latest
     steps:
       - run: "echo Job : ${{ github.job }}"
   Job4:
-    needs: [MyFirstJob, Job2]
+    needs: [ Job2, Job3]
     runs-on: ubuntu-latest
     steps:
       - run: "echo Job : ${{ github.job }}"
