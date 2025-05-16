@@ -5,7 +5,27 @@ on:
     branches: 
         - main
   workflow_dispatch:
-
+    inputs:
+      homedrive:
+        description: "Home Drive"
+        required: true
+      loglevel:
+        description: "Log Level"
+        required: true
+        default: "warning"
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      tag:
+        description: "Apply tag after successful run"
+        type: boolean
+        required: true
+      environment:
+        description: "Environment to run tests against"
+        required: true
+        type: environment
 jobs:
   MyFirstJob:
     runs-on: ubuntu-latest
@@ -19,3 +39,4 @@ jobs:
         run: |
           echo "The repository ${{ github.repository }} contains the following files"
           tree
+      
