@@ -29,7 +29,8 @@ jobs:
           # The secret is masked in logs when referenced directly
           echo "Using the secret in a secure way"
           # Example of how to use the secret (will be masked in logs)
-          echo "Secret length: ${#${{ steps.generate-secret.outputs.random_secret }}}"
+          SECRET="${{ steps.generate-secret.outputs.random_secret }}"
+          echo "Secret length: ${#SECRET}"
 
       - name: "Demonstrate using repository secrets"
         run: |
