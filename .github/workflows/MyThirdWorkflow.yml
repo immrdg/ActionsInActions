@@ -38,8 +38,8 @@ jobs:
           # In a real workflow, you would add the secret in repository settings
           # and reference it like this:
           echo "Example of using a repository secret (if it existed):"
-          echo "::add-mask::example-secret-value"
-          echo "Using masked value: example-secret-value"
+          echo "::add-mask::secret_value"
+          echo "Using masked value: ${{ secrets.secret_value }}"
 
       - name: "Create environment file with secrets"
         run: |
