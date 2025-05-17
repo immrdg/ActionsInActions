@@ -1,0 +1,101 @@
+name: MySecondWorkflow.yml
+on:
+    push:
+        branches:
+            - main
+        paths:
+          - '.github/workflows/MySecondWorkflow.yml'
+    workflow_dispatch:
+
+jobs:
+  Github_Outputs:
+    name: "Github Outputs"
+    runs-on: ubuntu-latest
+    # Define job outputs that can be used by other jobs
+    steps:
+      - name: "Set User Information"
+        id: user_info
+        run: |
+          echo "name=John Doe" >> $GITHUB_OUTPUT
+          echo "age=25" >> $GITHUB_OUTPUT
+          echo "role=Developer" >> $GITHUB_OUTPUT
+
+      - name: "Set System Information"
+        id: system_info
+        run: |
+          echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "random_number=$(( $RANDOM % 100 + 1 ))" >> $GITHUB_OUTPUT
+          echo "is_weekend=$(date +%u | awk '$1 >= 6 {print "true"} $1 < 6 {print "false"}')" >> $GITHUB_OUTPUT
+
+      - name: "Print Basic Outputs"
+        run: |
+          echo "User Information:"
+          echo "  Name: ${{ steps.user_info.outputs.name }}"
+          echo "  Age: ${{ steps.user_info.outputs.age }}"
+          echo "  Role: ${{ steps.user_info.outputs.role }}"
+          echo ""
+          echo "System Information:"
+          echo "  Timestamp: ${{ steps.system_info.outputs.timestamp }}"
+          echo "  Random Number: ${{ steps.system_info.outputs.random_number }}"
+          echo "  Is Weekend: ${{ steps.system_info.outputs.is_weekend }}"
+
+      - name: "Conditional Step Based on Outputs"
+        if: ${{ steps.system_info.outputs.random_number > 50 }}
+        run: |
+          echo "Lucky day! Random number is greater than 50: ${{ steps.system_info.outputs.random_number }}"
+
+      - name: "Using Outputs in Expressions"
+        id: combined_info
+        run: |
+          echo "greeting=Hello, ${{ steps.user_info.outputs.name }}! Today is ${{ steps.system_info.outputs.timestamp }}" >> $GITHUB_OUTPUT
+          echo "status=${{ steps.system_info.outputs.is_weekend == 'true' && 'Enjoy your weekend!' || 'Keep working hard!' }}" >> $GITHUB_OUTPUT
+
+      - name: "Display Combined Information"
+        run: |
+          echo "${{ steps.combined_info.outputs.greeting }}"
+          echo "${{ steps.combined_info.outputs.status }}"
+
+      - name: "Summary of Outputs"
+        run: |
+          echo "## Github Outputs Summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Output | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "| ------ | ----- |" >> $GITHUB_STEP_SUMMARY
+          echo "| User Name | ${{ steps.user_info.outputs.name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Random Number | ${{ steps.system_info.outputs.random_number }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Is Weekend | ${{ steps.system_info.outputs.is_weekend }} |" >> $GITHUB_STEP_SUMMARY
+    outputs:
+          user_name: ${{ steps.user_info.outputs.name }}
+          random_number: ${{ steps.system_info.outputs.random_number }}
+          is_weekend: ${{ steps.system_info.outputs.is_weekend }}
+          greeting: ${{ steps.combined_info.outputs.greeting }}
+
+
+  Use_Outputs:
+    name: "Use Job Outputs"
+    needs: Github_Outputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Display Outputs from Previous Job"
+        run: |
+          echo "Outputs from Github_Outputs job:"
+          echo "  User Name: ${{ needs.Github_Outputs.outputs.user_name }}"
+          echo "  Random Number: ${{ needs.Github_Outputs.outputs.random_number }}"
+          echo "  Is Weekend: ${{ needs.Github_Outputs.outputs.is_weekend }}"
+          echo "  Greeting: ${{ needs.Github_Outputs.outputs.greeting }}"
+
+      - name: "Conditional Step Based on Job Output"
+        if: ${{ needs.Github_Outputs.outputs.random_number > 50 }}
+        run: echo "The random number from the previous job is greater than 50!"
+
+      - name: "Weekend Message"
+        if: ${{ needs.Github_Outputs.outputs.is_weekend == 'true' }}
+        run: echo "It's the weekend! Time to relax."
+
+      - name: "Weekday Message"
+        if: ${{ needs.Github_Outputs.outputs.is_weekend == 'false' }}
+        run: echo "It's a weekday. Keep working!"
+
+      - name: "Using Job Outputs in Expressions"
+        run: |
+          echo "Message: ${{ needs.Github_Outputs.outputs.greeting }}"
+          echo "Status: ${{ needs.Github_Outputs.outputs.is_weekend == 'true' && 'Weekend mode activated!' || 'Weekday mode activated!' }}"
