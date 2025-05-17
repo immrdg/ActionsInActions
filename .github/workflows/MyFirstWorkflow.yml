@@ -80,4 +80,7 @@ jobs:
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node_version }}
+      - name: Matrix Environment Info
+        run: |
+          echo "Job ${{ github.job }} is running on ${{ matrix.os_version }}/${{ runner.os }} using Node.js ${{ matrix.node_version }}."
       - run: node --version
