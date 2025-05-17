@@ -4,6 +4,8 @@ on:
   push:
     branches: 
         - main
+    paths:
+        - '.github/workflows/MyFirstWorkflow.yml'
   workflow_dispatch:
     inputs:
       homedrive:
@@ -25,7 +27,11 @@ on:
       env:
         description: "Environment to run tests against"
         required: true
-        type: environment
+        type: choice
+        options:
+          - development
+          - staging
+          - production
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
