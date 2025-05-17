@@ -1,4 +1,4 @@
-name: MySecondWorkflow.yml
+name: MySecondWorkflow
 on:
     push:
         branches:

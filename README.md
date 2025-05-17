@@ -75,4 +75,11 @@ This repository includes an enhanced GitHub Actions workflow with the following 
 - Log level configuration
 - Optional tagging
 
+### Secrets Management
+- Demonstration of using repository secrets
+- Using the built-in GITHUB_TOKEN secret
+- Example of custom repository secrets
+- Proper masking of sensitive information in logs
+- Creating environment files with secrets
+
 To run this workflow manually, go to the Actions tab and select "Enhanced Workflow" from the list of workflows.

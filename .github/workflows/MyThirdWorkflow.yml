@@ -32,15 +32,6 @@ jobs:
           SECRET="${{ steps.generate-secret.outputs.random_secret }}"
           echo "Secret length: ${#SECRET}"
 
-      - name: "Demonstrate using repository secrets"
-        run: |
-          # This is an example of how you would use a repository secret
-          # In a real workflow, you would add the secret in repository settings
-          # and reference it like this:
-          echo "Example of using a repository secret (if it existed):"
-          echo "::add-mask::secret_value"
-          echo "Using masked value: ${{ secrets.secret_value }}"
-
       - name: "Create environment file with secrets"
         run: |
           # Create a .env file with secrets
@@ -50,7 +41,7 @@ jobs:
 
       - name: list files
         run: |
-          tree
+          tree -a
 
       - name: "Display contents of .env file"
         run: |
@@ -64,5 +55,6 @@ jobs:
           echo "This workflow demonstrates:" >> $GITHUB_STEP_SUMMARY
           echo "- Generating runtime secrets" >> $GITHUB_STEP_SUMMARY
           echo "- Masking sensitive values in logs" >> $GITHUB_STEP_SUMMARY
-          echo "- Using repository secrets (example)" >> $GITHUB_STEP_SUMMARY
+          echo "- Using built-in repository secrets (GITHUB_TOKEN)" >> $GITHUB_STEP_SUMMARY
+          echo "- How to use custom repository secrets" >> $GITHUB_STEP_SUMMARY
           echo "- Creating files with secrets" >> $GITHUB_STEP_SUMMARY
