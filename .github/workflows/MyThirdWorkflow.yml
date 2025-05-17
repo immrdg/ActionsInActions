@@ -1,0 +1,67 @@
+name: MyThirdWorkflow
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/MyThirdWorkflow.yml'
+  workflow_dispatch:
+jobs:
+  demonstrate_secrets:
+    name: "Demonstrate Creating And Using Secrets"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: "Generate a random secret"
+        id: generate-secret
+        run: |
+          # Generate a random string to use as a secret
+          RANDOM_SECRET=$(openssl rand -hex 16)
+          echo "random_secret=$RANDOM_SECRET" >> $GITHUB_OUTPUT
+          # Mask the secret in logs
+          echo "::add-mask::$RANDOM_SECRET"
+          echo "Generated a random secret (masked in logs)"
+
+      - name: "Use the generated secret"
+        run: |
+          # The secret is masked in logs when referenced directly
+          echo "Using the secret in a secure way"
+          # Example of how to use the secret (will be masked in logs)
+          echo "Secret length: ${#${{ steps.generate-secret.outputs.random_secret }}}"
+
+      - name: "Demonstrate using repository secrets"
+        run: |
+          # This is an example of how you would use a repository secret
+          # In a real workflow, you would add the secret in repository settings
+          # and reference it like this:
+          echo "Example of using a repository secret (if it existed):"
+          echo "::add-mask::example-secret-value"
+          echo "Using masked value: example-secret-value"
+
+      - name: "Create environment file with secrets"
+        run: |
+          # Create a .env file with secrets
+          echo "Creating .env file with secrets"
+          echo "API_KEY=${{ steps.generate-secret.outputs.random_secret }}" > .env
+          echo "Created .env file (secrets are masked in logs)"
+
+      - name: list files
+        run: |
+          tree
+
+      - name: "Display contents of .env file"
+        run: |
+          echo "Contents of .env file:"
+          cat .env
+
+      - name: "Summary of secrets usage"
+        run: |
+          echo "## Secrets in GitHub Actions" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "This workflow demonstrates:" >> $GITHUB_STEP_SUMMARY
+          echo "- Generating runtime secrets" >> $GITHUB_STEP_SUMMARY
+          echo "- Masking sensitive values in logs" >> $GITHUB_STEP_SUMMARY
+          echo "- Using repository secrets (example)" >> $GITHUB_STEP_SUMMARY
+          echo "- Creating files with secrets" >> $GITHUB_STEP_SUMMARY
