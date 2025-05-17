@@ -68,7 +68,7 @@ jobs:
       max-parallel: 3
       matrix:
         os_version: [macos-latest, ubuntu-latest]
-        node_version: [14, 16]
+        node_version: [18, 20]
     name: Node.js Matrix Job
     runs-on: ${{ matrix.os_version }}
     steps:
