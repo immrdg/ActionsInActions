@@ -35,6 +35,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
+      - name: Environment Information
+        run: |
+          echo "The job is running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
       - name: List files in repository
         run: |
           echo "The repository ${{ github.repository }} contains the following files"
